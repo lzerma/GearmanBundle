@@ -81,7 +81,7 @@ class GearmanExecute extends AbstractGearmanService
         }
 
         $objInstance = $this->createJob($worker);
-        $this->runJob($gearmanWorker, $objInstance, $jobs, $iterations);
+        $this->runJob($gearmanWorker, $objInstance, $jobs, $iterations, $worker["instances"]);
 
         return $this;
     }
@@ -134,7 +134,7 @@ class GearmanExecute extends AbstractGearmanService
      *
      * @return GearmanExecute self Object
      */
-    private function runJob(\GearmanWorker $gearmanWorker, $objInstance, array $jobs, $iterations)
+    private function runJob(\GearmanWorker $gearmanWorker, $objInstance, array $jobs, $iterations, $instances)
     {
 
         /**
@@ -142,7 +142,9 @@ class GearmanExecute extends AbstractGearmanService
          */
         foreach ($jobs as $job) {
 
-            $gearmanWorker->addFunction($job['realCallableName'], array($objInstance, $job['methodName']));
+        	for($i = 0; $i <= $instances; $i++) {
+            	$gearmanWorker->addFunction($job['realCallableName'], array($objInstance, $job['methodName']));
+        	}
         }
 
         /**

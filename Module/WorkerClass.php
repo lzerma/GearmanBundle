@@ -314,7 +314,7 @@ class WorkerClass
             'description'  => $this->description,
             'service'      => $this->service,
             'servers'      => $this->servers,
-        	'servers'      => $this->servers,
+        	'instances'      => $this->instances,
             'iterations'   => $this->iterations,
             'jobs'         => $this->jobCollection->toArray(),
         );
