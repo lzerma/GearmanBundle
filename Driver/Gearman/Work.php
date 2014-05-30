@@ -45,6 +45,13 @@ class Work extends Annotation
      * @var mixed
      */
     public $servers;
+    
+    /**
+     * Number of works to be run
+     * 
+     * @var integer
+     */
+    public $instances;
 
     /**
      * Default method to call for all jobs inside this work
