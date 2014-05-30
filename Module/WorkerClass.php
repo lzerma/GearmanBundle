@@ -77,6 +77,13 @@ class WorkerClass
     /**
      * @var integer
      *
+     * Number of iterations specified for all jobs inside Work
+     */
+    private $instances;
+    
+    /**
+     * @var integer
+     *
      * Number of iterations this job will be alive before die
      */
     private $iterations;
@@ -161,6 +168,7 @@ class WorkerClass
 
         $this->servers = $this->loadServers($workAnnotation, $servers);
         $this->iterations = $this->loadIterations($workAnnotation, $defaultSettings);
+        $this->instances = $this->loadInstances($workAnnotation, $defaultSettings);
         $this->defaultMethod = $this->loadDefaultMethod($workAnnotation, $defaultSettings);
         $this->jobCollection = $this->createJobCollection($reflectionClass, $reader);
     }
@@ -207,6 +215,24 @@ class WorkerClass
         return is_null($workAnnotation->iterations)
             ? (int)$defaultSettings['iterations']
             : (int)$workAnnotation->iterations;
+    }
+    
+    /**
+     * Load instances
+     *
+     * If instances is defined in WorkAnnotation, this one is used.
+     * Otherwise is used set in Class
+     *
+     * @param WorkAnnotation $workAnnotation  WorkAnnotation class
+     * @param array          $defaultSettings Default settings for Worker
+     *
+     * @return integer Instances
+     */
+    private function loadInstances(WorkAnnotation $workAnnotation, array $defaultSettings)
+    {
+    	return is_null($workAnnotation->instances)
+    	? (int)$defaultSettings['instances']
+    	: (int)$workAnnotation->instances;
     }
 
     /**
@@ -288,6 +314,7 @@ class WorkerClass
             'description'  => $this->description,
             'service'      => $this->service,
             'servers'      => $this->servers,
+        	'servers'      => $this->servers,
             'iterations'   => $this->iterations,
             'jobs'         => $this->jobCollection->toArray(),
         );
